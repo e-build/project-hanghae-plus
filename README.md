@@ -1,7 +1,7 @@
 # 개요
 - 이커머스 도메인 전반에 대한 백엔드 설계
   - 구매자, 판매자, 상점, 상품, 주문, 결제, 장바구니, 즐겨찾기
-  - [요구사항 상세](docs/commerce-senario.md)
+  - [요구사항 상세](docs/commerce-scenario.md)
 
 # 기술스택
 - Application
