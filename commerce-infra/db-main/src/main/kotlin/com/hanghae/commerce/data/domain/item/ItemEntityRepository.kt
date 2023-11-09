@@ -1,7 +1,7 @@
 package com.hanghae.commerce.data.domain.item
 
 import com.hanghae.commerce.item.domain.Item
-import com.hanghae.commerce.item.domain.ItemRepository
+import com.hanghae.commerce.item.infrastructure.ItemRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 

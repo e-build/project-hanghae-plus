@@ -4,7 +4,7 @@ import com.hanghae.commerce.claim.domain.command.OrderCancelCommand
 import com.hanghae.commerce.event.CommerceEventPublisher
 import com.hanghae.commerce.order.domain.Order
 import com.hanghae.commerce.order.domain.OrderStatus
-import com.hanghae.commerce.order.domain.OrderWriter
+import com.hanghae.commerce.order.infrastructure.OrderWriter
 import com.hanghae.commerce.testconfiguration.UnitTest
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK

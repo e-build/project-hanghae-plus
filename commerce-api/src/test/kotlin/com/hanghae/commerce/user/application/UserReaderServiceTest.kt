@@ -3,8 +3,8 @@ package com.hanghae.commerce.user.application
 import com.hanghae.commerce.testconfiguration.IntegrationTest
 import com.hanghae.commerce.user.domain.UserRepository
 import com.hanghae.commerce.user.domain.UserType
-import com.hanghae.commerce.user.presentation.dto.CreateCustomerRequest
-import com.hanghae.commerce.user.presentation.dto.CreateSellerRequest
+import com.hanghae.commerce.user.api.dto.CreateCustomerRequest
+import com.hanghae.commerce.user.api.dto.CreateSellerRequest
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test

@@ -1,6 +1,6 @@
 package com.hanghae.commerce.order.application
 
-import com.hanghae.commerce.item.application.ItemStockService
+import com.hanghae.commerce.item.domain.ItemStockService
 import com.hanghae.commerce.order.domain.OrderService
 import com.hanghae.commerce.order.domain.command.OrderCommand
 import org.springframework.stereotype.Service
@@ -17,7 +17,7 @@ class OrderFacade(
 
     private fun verifyStockRemains(orderItems: List<OrderCommand.OrderItem>) {
         orderItems.forEach {
-            itemStockService.verifyStockRemains(it)
+            itemStockService.verifyAndConsume(it)
         }
     }
 }

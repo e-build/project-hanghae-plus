@@ -2,9 +2,9 @@ package com.hanghae.commerce.order.presentation
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.hanghae.commerce.item.domain.Item
-import com.hanghae.commerce.item.domain.ItemRepository
-import com.hanghae.commerce.order.domain.OrderRepository
-import com.hanghae.commerce.order.presentaion.dto.OrderRequest
+import com.hanghae.commerce.item.infrastructure.ItemRepository
+import com.hanghae.commerce.order.infrastructure.OrderRepository
+import com.hanghae.commerce.order.api.dto.OrderRequest
 import com.hanghae.commerce.testconfiguration.EnableTestcontainers
 import com.hanghae.commerce.testconfiguration.IntegrationTest
 import org.assertj.core.api.Assertions.assertThat

@@ -1,10 +1,10 @@
 package com.hanghae.commerce.item.application
 
 import com.hanghae.commerce.item.domain.Item
-import com.hanghae.commerce.item.domain.ItemWriter
+import com.hanghae.commerce.item.infrastructure.ItemWriter
 import com.hanghae.commerce.store.domain.Store
-import com.hanghae.commerce.store.domain.StoreRepository
-import com.hanghae.commerce.store.domain.StoreWriter
+import com.hanghae.commerce.store.infrastructure.StoreRepository
+import com.hanghae.commerce.store.infrastructure.StoreWriter
 import com.hanghae.commerce.testconfiguration.IntegrationTest
 import com.hanghae.commerce.user.domain.User
 import com.hanghae.commerce.user.domain.UserRepository
@@ -32,7 +32,7 @@ class ItemReadServiceTest(
     fun tearDown() {
         userRepository.allDelete()
         itemWriter.allDelete()
-        storeWriter.allDelete()
+        storeWriter.deleteAll()
     }
 
     @Test
@@ -49,7 +49,7 @@ class ItemReadServiceTest(
 
         val savedUser = userRepository.save(user)
 
-        val store = Store.of(id = "1", name = "store1", savedUser.id)
+        val store = Store(id = "1", name = "store1", savedUser.id)
 
         val savedStore = storeRepository.save(store)
         val item1 = Item.of("1", "item1", 100, 10, savedStore.id)
@@ -90,7 +90,7 @@ class ItemReadServiceTest(
 
         val savedUser = userRepository.save(user)
 
-        val store = Store.of(id = "1", name = "store1", savedUser.id)
+        val store = Store(id = "1", name = "store1", savedUser.id)
 
         val savedStore = storeRepository.save(store)
         val item = Item.of("1", "item1", 100, 10, savedStore.id)

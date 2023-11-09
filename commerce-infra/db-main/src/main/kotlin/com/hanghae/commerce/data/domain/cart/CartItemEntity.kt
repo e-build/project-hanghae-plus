@@ -1,35 +1,29 @@
 package com.hanghae.commerce.data.domain.cart
 
-import com.hanghae.commerce.cart.domain.CartItem
+import com.hanghae.commerce.data.common.PrimaryKeyEntity
 import jakarta.persistence.*
-import java.util.*
 
 @Entity
 @Table(
     name = "cart_item",
-    uniqueConstraints = [UniqueConstraint(name = "UniqueCartAndItem", columnNames = ["cart_id", "item_id"])],
+    uniqueConstraints = [
+        UniqueConstraint(
+            name = "UniqueCartAndItem",
+            columnNames = ["cart_id", "item_id"],
+        ),
+    ],
 )
 class CartItemEntity(
-    @Id val identifier: String,
+    @Transient
+    private val identifier: String,
 
-    @Column(name = "item_id") val itemId: String, // 상품 id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
+    val cart: CartEntity,
 
-    @Column var quantity: Int, // 수량
+    @Column(name = "item_id", nullable = false)
+    val itemId: String,
 
-    @Column(name = "cart_id") val cartId: String, // 장바구니 id
-) {
-    companion object {
-        fun from(cartItem: CartItem): CartItemEntity {
-            return CartItemEntity(
-                identifier = cartItem.id ?: UUID.randomUUID().toString(),
-                itemId = cartItem.itemId,
-                quantity = cartItem.quantity,
-                cartId = cartItem.cartId,
-            )
-        }
-    }
-
-    fun increaseQuantity() {
-        this.quantity += 1
-    }
-}
+    @Column(name = "quantity", nullable = false)
+    var quantity: Int = 1,
+) : PrimaryKeyEntity(identifier)

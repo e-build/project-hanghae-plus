@@ -1,9 +1,9 @@
 package com.hanghae.commerce.item.application
 
 import com.hanghae.commerce.item.domain.Item
-import com.hanghae.commerce.item.domain.ItemWriter
-import com.hanghae.commerce.item.presentaion.dto.CreateItemRequest
-import com.hanghae.commerce.item.presentaion.dto.CreateItemResponse
+import com.hanghae.commerce.item.infrastructure.ItemWriter
+import com.hanghae.commerce.item.api.dto.CreateItemRequest
+import com.hanghae.commerce.item.api.dto.CreateItemResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*

@@ -1,12 +1,13 @@
 package com.hanghae.commerce.store.application
 
 import com.hanghae.commerce.store.domain.Store
-import com.hanghae.commerce.store.domain.StoreWriter
+import com.hanghae.commerce.store.domain.StoreReadService
+import com.hanghae.commerce.store.infrastructure.StoreWriter
 import com.hanghae.commerce.testconfiguration.IntegrationTest
 import com.hanghae.commerce.user.domain.User
 import com.hanghae.commerce.user.domain.UserType
 import com.hanghae.commerce.user.domain.UserWriter
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,22 +26,11 @@ class StoreReadServiceTest(
     @AfterEach
     fun tearDown() {
         userWriter.allDelete()
-        storeWriter.allDelete()
+        storeWriter.deleteAll()
     }
 
     @Test
     fun getStoresByUserId() {
-        val user = userWriter.save(
-            User(
-                id = "1",
-                name = "sangmin",
-                age = 20,
-                email = "hanghae@gmail.com",
-                address = "seoul",
-                userType = UserType.SELLER,
-            ),
-        )
-
         storeWriter.save(
             Store(
                 id = "1",
@@ -56,15 +46,12 @@ class StoreReadServiceTest(
                 "1",
             ),
         )
-        val results = storeReadService.getStoresByUserId(user.id)
+        val results = storeReadService.read()
 
-        Assertions.assertThat(results).hasSize(2)
-        Assertions.assertThat(results).extracting("id")
-            .containsExactlyInAnyOrder("1", "2")
-        Assertions.assertThat(results).extracting("name")
-            .containsExactlyInAnyOrder("상점1", "상점2")
-        Assertions.assertThat(results).extracting("userId")
-            .containsExactlyInAnyOrder("1", "1")
+        assertThat(results).hasSize(2)
+        assertThat(results).extracting("id").containsExactlyInAnyOrder("1", "2")
+        assertThat(results).extracting("name").containsExactlyInAnyOrder("상점1", "상점2")
+        assertThat(results).extracting("userId").containsExactlyInAnyOrder("1", "1")
     }
 
     @Test
@@ -88,10 +75,10 @@ class StoreReadServiceTest(
             ),
         )
 
-        val result = storeReadService.getStore(store.id)
+        val result = storeReadService.read(store.id)
 
-        Assertions.assertThat(result.id).isEqualTo("1")
-        Assertions.assertThat(result.name).isEqualTo("상점1")
-        Assertions.assertThat(result.userId).isEqualTo("1")
+        assertThat(result.id).isEqualTo("1")
+        assertThat(result.name).isEqualTo("상점1")
+        assertThat(result.userId).isEqualTo("1")
     }
 }

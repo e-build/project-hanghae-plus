@@ -1,6 +1,6 @@
 package com.hanghae.commerce.order.domain
 
-import com.hanghae.commerce.item.domain.ItemReader
+import com.hanghae.commerce.item.infrastructure.ItemReader
 import com.hanghae.commerce.order.domain.command.OrderCommand
 import org.springframework.stereotype.Component
 

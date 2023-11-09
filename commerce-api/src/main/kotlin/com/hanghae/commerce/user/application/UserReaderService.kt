@@ -1,7 +1,7 @@
 package com.hanghae.commerce.user.application
 
 import com.hanghae.commerce.user.domain.UserReader
-import com.hanghae.commerce.user.presentation.dto.GetUserResponse
+import com.hanghae.commerce.user.api.dto.GetUserResponse
 import org.springframework.stereotype.Service
 
 @Service
@@ -10,7 +10,8 @@ class UserReaderService(
 ) {
 
     fun getUserById(userId: String): GetUserResponse {
-        val user = userReader.findById(userId) ?: throw IllegalArgumentException()
-        return GetUserResponse.of(user)
+        return GetUserResponse.of(
+            userReader.findById(userId),
+        )
     }
 }

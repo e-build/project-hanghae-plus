@@ -1,8 +1,8 @@
 package com.hanghae.commerce.item.application
 
-import com.hanghae.commerce.item.domain.ItemReader
-import com.hanghae.commerce.item.presentaion.dto.GetItemByItemIdResponse
-import com.hanghae.commerce.item.presentaion.dto.GetItemsByStoreIdResponse
+import com.hanghae.commerce.item.infrastructure.ItemReader
+import com.hanghae.commerce.item.api.dto.GetItemByItemIdResponse
+import com.hanghae.commerce.item.api.dto.GetItemsByStoreIdResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

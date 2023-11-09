@@ -4,13 +4,14 @@ import com.hanghae.commerce.event.CommerceEventPublisher
 import com.hanghae.commerce.order.domain.Order
 import com.hanghae.commerce.payment.domain.command.PaymentCommand
 import com.hanghae.commerce.payment.domain.command.PaymentRefundCommand
-import com.hanghae.commerce.payment.infra.PgApiCaller
+import com.hanghae.commerce.payment.infrastructure.PaymentWriter
+import com.hanghae.commerce.payment.infrastructure.PgClient
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
 import org.springframework.stereotype.Service
 
 @Service
 class PaymentService(
-    private val pgApiCaller: PgApiCaller,
+    private val pgClient: PgClient,
     private val paymentWriter: PaymentWriter,
     private val commerceEventPublisher: CommerceEventPublisher,
 ) {
@@ -31,7 +32,7 @@ class PaymentService(
                 bankAccount = command.bankAccount,
             ),
         )
-        pgApiCaller.payment(payment)
+        pgClient.payment(payment)
         commerceEventPublisher.publish(PaymentCompletedEvent(order.id))
         return payment.id
     }
@@ -48,6 +49,6 @@ class PaymentService(
 
         payment.refund(command.bankAccount)
         paymentWriter.write(payment)
-        pgApiCaller.refund(payment)
+        pgClient.refund(payment)
     }
 }
