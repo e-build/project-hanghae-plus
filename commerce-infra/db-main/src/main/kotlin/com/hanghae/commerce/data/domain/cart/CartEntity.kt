@@ -1,24 +1,22 @@
 package com.hanghae.commerce.data.domain.cart
 
+import com.hanghae.commerce.data.common.PrimaryKeyEntity
 import jakarta.persistence.*
-import java.util.UUID
 
 @Entity
-@Table(name = "cart", uniqueConstraints = [UniqueConstraint(name = "UniqueUser", columnNames = ["user_id"])])
+@Table(
+    name = "cart",
+    uniqueConstraints = [
+        UniqueConstraint(
+            name = "UniqueUser",
+            columnNames = ["user_id"],
+        ),
+    ],
+)
 class CartEntity(
-    @Id val identifier: String,
+    @Transient
+    private val identifier: String,
 
-    @Column(name = "user_id", nullable = false)
-    val userId: Long,
-
-) {
-
-    companion object {
-        fun from(userId: Long): CartEntity {
-            return CartEntity(
-                identifier = UUID.randomUUID().toString(),
-                userId = userId,
-            )
-        }
-    }
-}
+    @Column(name = "user_id", nullable = false, unique = true)
+    val userId: String,
+) : PrimaryKeyEntity(identifier)

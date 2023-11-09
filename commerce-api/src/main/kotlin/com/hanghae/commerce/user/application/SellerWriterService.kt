@@ -3,8 +3,8 @@ package com.hanghae.commerce.user.application
 import com.hanghae.commerce.user.domain.User
 import com.hanghae.commerce.user.domain.UserType
 import com.hanghae.commerce.user.domain.UserWriter
-import com.hanghae.commerce.user.presentation.dto.CreateSellerRequest
-import com.hanghae.commerce.user.presentation.dto.CreateSellerResponse
+import com.hanghae.commerce.user.api.dto.CreateSellerRequest
+import com.hanghae.commerce.user.api.dto.CreateSellerResponse
 import org.springframework.stereotype.Service
 import java.util.*
 

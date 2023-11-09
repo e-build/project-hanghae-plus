@@ -1,8 +1,7 @@
 package com.hanghae.commerce.item.domain
 
 import com.hanghae.commerce.claim.domain.OrderCancelCompletedEvent
-import com.hanghae.commerce.item.application.ItemStockService
-import com.hanghae.commerce.order.domain.OrderReader
+import com.hanghae.commerce.order.infrastructure.OrderReader
 import com.hanghae.commerce.order.domain.OrderItem
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component

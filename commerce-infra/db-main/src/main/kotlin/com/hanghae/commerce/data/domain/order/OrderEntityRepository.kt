@@ -2,7 +2,7 @@ package com.hanghae.commerce.data.domain.order
 
 import com.hanghae.commerce.order.domain.Order
 import com.hanghae.commerce.order.domain.OrderItem
-import com.hanghae.commerce.order.domain.OrderRepository
+import com.hanghae.commerce.order.infrastructure.OrderRepository
 import org.springframework.stereotype.Repository
 
 @Repository

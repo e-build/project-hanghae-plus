@@ -1,8 +1,8 @@
 package com.hanghae.commerce.order.application
 
 import com.hanghae.commerce.item.domain.Item
-import com.hanghae.commerce.item.domain.ItemRepository
-import com.hanghae.commerce.order.domain.OrderRepository
+import com.hanghae.commerce.item.infrastructure.ItemRepository
+import com.hanghae.commerce.order.infrastructure.OrderRepository
 import com.hanghae.commerce.order.domain.OrderStatus
 import com.hanghae.commerce.order.domain.command.OrderCommand
 import com.hanghae.commerce.order.exception.SoldOutException

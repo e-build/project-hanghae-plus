@@ -4,12 +4,16 @@ spring:
     port: 6379
 
 ---
+spring:
+  config:
+    activate:
+      on-profile: local
 
+---
 spring:
   config:
     activate:
       on-profile: local-container
   redis:
-
     host: hanghae-redis
     port: 6379

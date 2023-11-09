@@ -1,28 +1,34 @@
 package com.hanghae.commerce.data.domain.cart
 
 import com.hanghae.commerce.cart.domain.Cart
-import com.hanghae.commerce.cart.domain.CartRepository
+import com.hanghae.commerce.cart.infrastructure.CartRepository
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
 
 @Repository
 class CartEntityRepository(
     private val jpaCartRepository: JpaCartRepository,
+    private val jpaCartItemRepository: JpaCartItemRepository,
 ) : CartRepository {
 
-    @Transactional(readOnly = true)
-    override fun readByUserId(userId: Long): Cart? {
-        return jpaCartRepository.findByUserId(userId)?.let {
-            Cart(
-                id = it.identifier,
-                userId = it.userId,
-            )
-        }
+    override fun findById(cartId: String): Cart? {
+        return jpaCartRepository.findById(cartId).orElse(null)
+            ?.let {
+                it.toDomain(jpaCartItemRepository.findAllByCartId(it.id))
+            }
     }
 
-    @Transactional
-    override fun add(userId: Long): Cart? {
-        val cartEntity = jpaCartRepository.save(CartEntity.from(userId))
-        return Cart(id = cartEntity.identifier, userId = cartEntity.userId)
+    override fun findByUserId(userId: String): Cart? {
+        return jpaCartRepository.findByUserId(userId)
+            ?.let {
+                Cart(
+                    id = it.id,
+                    userId = it.userId,
+                )
+            }
+    }
+
+    override fun save(cart: Cart): Cart {
+        val cartEntity = jpaCartRepository.save(cart.toEntity())
+        return Cart(id = cartEntity.id, userId = cartEntity.userId)
     }
 }

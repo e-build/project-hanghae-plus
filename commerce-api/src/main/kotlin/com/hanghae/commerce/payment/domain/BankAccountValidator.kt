@@ -1,13 +1,13 @@
 package com.hanghae.commerce.payment.domain
 
-import com.hanghae.commerce.payment.infra.PgApiCaller
+import com.hanghae.commerce.payment.infrastructure.PgClient
 import org.springframework.stereotype.Component
 
 @Component
 class BankAccountValidator(
-    private val pgApiCaller: PgApiCaller,
+    private val pgClient: PgClient,
 ) {
     fun validate(bankAccount: BankAccount): Boolean {
-        return pgApiCaller.validateAccount(bankAccount)
+        return pgClient.validateAccount(bankAccount)
     }
 }

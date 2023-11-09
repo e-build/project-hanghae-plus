@@ -1,5 +1,6 @@
 package com.hanghae.commerce.store.domain
 
+import com.hanghae.commerce.store.infrastructure.StoreRepository
 import com.hanghae.commerce.testconfiguration.IntegrationTest
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
@@ -13,7 +14,7 @@ class StoreRepositoryTest(
     @Test
     fun save() {
         // given
-        val store = Store.of(id = "1", name = "store1", "1")
+        val store = Store(id = "1", name = "store1", "1")
 
         // when
         val savedStore = storeRepository.save(store)

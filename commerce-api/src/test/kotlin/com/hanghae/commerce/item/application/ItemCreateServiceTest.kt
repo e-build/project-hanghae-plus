@@ -1,6 +1,6 @@
 package com.hanghae.commerce.item.application
 
-import com.hanghae.commerce.item.presentaion.dto.CreateItemRequest
+import com.hanghae.commerce.item.api.dto.CreateItemRequest
 import com.hanghae.commerce.testconfiguration.IntegrationTest
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
