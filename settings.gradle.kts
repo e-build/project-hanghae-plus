@@ -1,4 +1,4 @@
-rootProject.name = "HangHae01"
+rootProject.name = "project-hp-commerce"
 
 include(
     "commerce-api",
