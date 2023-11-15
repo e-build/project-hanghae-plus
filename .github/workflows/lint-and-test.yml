@@ -1,9 +1,11 @@
 name: Lint and Test with coverage
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
-      - develop
       - main
 
 jobs:
