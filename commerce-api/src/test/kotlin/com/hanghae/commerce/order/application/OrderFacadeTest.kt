@@ -220,9 +220,15 @@ class OrderFacadeTest {
             // then
             val savedOrder = orderRepository.findById(orderId)
             assertThat(savedOrder).isNotNull
+
             assertThat(savedOrder!!.orderAmount).isEqualTo(item.price * 1)
+
+
             assertThat(savedOrder.deliveryFee).isEqualTo(2500)
-            assertThat(savedOrder.paymentAmount).isEqualTo(savedOrder.orderAmount + savedOrder.deliveryFee)
+
+
+            assertThat(savedOrder.paymentAmount)
+                .isEqualTo(savedOrder.orderAmount + savedOrder.deliveryFee)
             assertThat(savedOrder.orderItemList).isNotEmpty
         }
 
