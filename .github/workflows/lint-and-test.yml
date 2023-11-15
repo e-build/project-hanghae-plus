@@ -15,6 +15,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: ktlint
+        uses: ScaCap/action-ktlint@master
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          reporter: github-pr-review
 
       - name: Cache Gradle packages
         uses: actions/cache@v3
@@ -55,7 +60,7 @@ jobs:
         if: always()
         with:
           report_paths: build/test-results/**/*.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
       - name: If build fails, notify as Slack
         uses: 8398a7/action-slack@v3
         with:
@@ -88,7 +93,7 @@ jobs:
         with:
           title: 📝 테스트 커버리지 리포트입니다
           paths: ${{ github.workspace }}/build/reports/jacoco/test/jacocoTestReport.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
           min-coverage-overall: 50
           min-coverage-changed-files: 50
           pass-emoji: ':green_circle:'
