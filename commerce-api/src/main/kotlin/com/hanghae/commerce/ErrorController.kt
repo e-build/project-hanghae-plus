@@ -10,16 +10,23 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/raise")
 class ErrorController {
 
+
+
     @GetMapping("/exception")
     fun exception(): ResponseEntity<String> {
+
         throw IllegalArgumentException("api called - exception")
+
     }
 
     @GetMapping("/timeout/{seconds}")
     fun timeout(
         @PathVariable seconds: Long,
     ): ResponseEntity<String> {
+
         Thread.sleep(1000 * seconds)
+
         return ResponseEntity.ok("api called - timeout")
     }
+
 }
