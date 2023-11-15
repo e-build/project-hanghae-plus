@@ -11,9 +11,7 @@ on:
 jobs:
   Check:
     name: lint-test-coverage
-    continue-on-error: false
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -35,14 +33,18 @@ jobs:
           distribution: 'temurin'
 
       - name: Execute ktlint Check
+        id: ktlintCheck
         run: ./gradlew ktlintCheck
       - name: Execute unit test
+        id: unitTest
         run: ./gradlew unitTest
       - name: Execute integration test
+        id: integrationTest
+        if: success()
         run: ./gradlew integrationTest
       - name: Register test results as comments in PR
         uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
+        if: steps.ktlintCheck.outcome == 'success'
         with:
           junit_files: "build/test-results/**/*.xml"
       - name: If test fails, register a Check comment on the failed code line
@@ -59,11 +61,11 @@ jobs:
           fields: repo, message, commit, author, action, eventName, ref, workflow, job, took
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: ${{ failure() }}
+        if: failure()
       - name: Execute jacoco coverage
         run: ./gradlew jacocoTestReport
+        if: steps.unitTest.outcome == 'success' && steps.integrationTest.outcome == 'success'
       - name: Register test coverage as a comment in PR
-        id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
         with:
           title: 📝 테스트 커버리지 리포트입니다
@@ -73,5 +75,6 @@ jobs:
           min-coverage-changed-files: 50
           pass-emoji: ':green_circle:'
           fail-emoji: ':red_circle:'
+        if: success()
 
 
