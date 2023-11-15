@@ -16,7 +16,6 @@ class ErrorController {
     fun exception(): ResponseEntity<String> {
 
         throw IllegalArgumentException("api called - exception")
-
     }
 
     @GetMapping("/timeout/{seconds}")
