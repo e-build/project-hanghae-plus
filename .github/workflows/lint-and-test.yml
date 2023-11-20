@@ -38,6 +38,7 @@ jobs:
       - name: Execute unit test
         id: unitTest
         run: ./gradlew unitTest
+        if: success()
       - name: Execute integration test
         id: integrationTest
         if: success()
@@ -49,7 +50,7 @@ jobs:
           junit_files: "build/test-results/**/*.xml"
       - name: If test fails, register a Check comment on the failed code line
         uses: mikepenz/action-junit-report@v3
-        if: always()
+        if: steps.unitTest.outcome == 'failure' || steps.integrationTest.outcome == 'failure'
         with:
           report_paths: build/test-results/**/*.xml
           token: ${{ secrets.GH_TOKEN }}
