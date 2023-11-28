@@ -55,7 +55,9 @@ class PaymentControllerTest {
 
         val result: ResultActions = mvc.perform(
             post("/api/payments")
-                .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON),
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON),
         ).andDo(print())
 
         // then
