@@ -22,8 +22,8 @@ class ItemStockService(
         leaseTime = 60,
     )
     fun verifyAndConsume(orderItemCommand: OrderCommand.OrderItem) {
-        val item: Item = itemReader.getItemByItemId(orderItemCommand.itemId) ?: throw IllegalArgumentException("존재하지 않는 상품입니다.")
-
+        val item: Item = itemReader.getItemByItemId(orderItemCommand.itemId)
+            ?: throw IllegalArgumentException("존재하지 않는 상품입니다.")
         if (item.stock - orderItemCommand.quantity < 0) {
             throw SoldOutException("재고가 부족합니다.")
         }

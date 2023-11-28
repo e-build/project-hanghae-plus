@@ -30,9 +30,7 @@ class HttpRequestLoggingInterceptor : HandlerInterceptor {
     ) {
         val startTime = request.getAttribute("startTime") as Instant
         val endTime = Instant.now()
-
         val processingTimeMillis = endTime.toEpochMilli() - startTime.toEpochMilli()
-
         when {
             processingTimeMillis > 5000 -> logger.error { "${request.log()} Significant Slow API: ${processingTimeMillis}ms" }
             processingTimeMillis > 3000 -> logger.warn { "${request.log()} Slow API: ${processingTimeMillis}ms" }
