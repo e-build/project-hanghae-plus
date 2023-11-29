@@ -111,10 +111,32 @@
       예를들어 API 성능 로깅은 Interceptor 에서 하고 MDC 셋팅은 AOP 에서 했다고 하면, AOP 실행 이후 MDC는 clear 해야 하기 때문에 Interceptor에서 찍는 로그는 MDC 적용이 안됨
     - Filter와 Interceptor 는 실행 시점에 차이가 있지만 일반적으로 특정 UrlPattern 에 따라 공통적으로 적용할 로직을 정의하는 용도로 사용됨(ex. 인증, 인코딩, 보안, 로깅 등)
     - 트랜잭션과 같이 특정 스프링에 빈에 대한 호출을 가로채는 것과 같이 좀 더 구체적인 상황과 기술에 대한 로깅을 위해 AOP 로 구현하는 것이 편리하다고 생각함
-- 애플리케이션에서 성능 로깅
-  - 성능 로깅은 애플리케이션의 성능을 모니터링하고, 성능에 영향을 미치는 요소를 파악하기 위해 필요함.
-  - HTTP API 요청-응답
-  - 슬로우 쿼리
+- HTTP API 성능 로깅
+  - 
+- 슬로우 쿼리 로깅
+  - 방법 1. hibernate statistics 활용
+    ```properties
+    jpa.properties.hibernate.generate_statistics=true
+    logging.level.org.hibernate.stat=debug
+    ```
+    - 레거시에서 mybatis와 JPA를 같이 사용하는 경우 각각 다른 방식으로 로깅을 구성해야 하는 불편함이 있음
+    - logging 모듈, DB 모듈로 로깅 설정이 분리되어 관리해야 함
+  - 방법 2. 직접 AOP 구현 
+    ```kotlin
+    @Around("execution(* com.hanghae.commerce.data.domain..*(..))")
+    @Throws(Throwable::class)
+    fun handle(joinPoint: ProceedingJoinPoint): Any {
+        val start = Instant.now()
+        val result = joinPoint.proceed()
+        val executionTime = Instant.now().toEpochMilli() - start.toEpochMilli()
+        when {
+            executionTime > SLOW_QUERY_THRESHOLD -> logger.error { "${joinPoint.signature} executed in ${executionTime}ms" }
+            executionTime > 3000 -> logger.warn { "${joinPoint.signature} executed in ${executionTime}ms" }
+            else -> logger.debug { "${joinPoint.signature} executed in ${executionTime}ms" }
+        }
+        return result
+    }
+    ```
 - INFO 수준의 로그
   - 사용자 행동 추적
   - 

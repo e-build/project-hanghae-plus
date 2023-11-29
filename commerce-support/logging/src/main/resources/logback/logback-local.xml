@@ -15,4 +15,5 @@
 <!--    <logger name="org.springframework.web" level="DEBUG"/>-->
 <!--    <logger name="org.springframework.data" level="DEBUG"/>-->
     <logger name="com.hanghae.commerce" level="DEBUG"/>
+<!--    <logger name="org.hibernate.stat" level="DEBUG"/>-->
 </configuration>
