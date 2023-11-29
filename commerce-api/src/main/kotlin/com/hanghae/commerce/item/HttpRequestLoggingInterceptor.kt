@@ -1,6 +1,6 @@
 package com.hanghae.commerce.item
 
-import com.hanghae.commerce.common.extension.log
+import com.hanghae.commerce.logging.aop.log
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import mu.KotlinLogging

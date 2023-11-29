@@ -1,4 +1,4 @@
-package com.hanghae.commerce.common.extension
+package com.hanghae.commerce.logging.aop
 
 import com.hanghae.commerce.logging.LogConstants
 import jakarta.servlet.http.HttpServletRequest
