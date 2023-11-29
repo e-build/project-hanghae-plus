@@ -1,6 +1,6 @@
 package com.hanghae.commerce.common
 
-import com.hanghae.commerce.common.extension.log
+import com.hanghae.commerce.logging.aop.log
 import jakarta.servlet.http.HttpServletRequest
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
