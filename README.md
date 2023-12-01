@@ -114,14 +114,19 @@
 - HTTP API 성능 로깅
   - 
 - 슬로우 쿼리 로깅
-  - 방법 1. hibernate statistics 활용
+  - 방법 1. hibernate session 이벤트 설정
+    ```properties
+    hibernate.session.events.log.LOG_QUERIES_SLOWER_THAN_MS=1000
+    org.hibernate.SQL_SLOW=info
+    ```
+  - 방법 2. hibernate statistics 활용
     ```properties
     jpa.properties.hibernate.generate_statistics=true
     logging.level.org.hibernate.stat=debug
     ```
     - 레거시에서 mybatis와 JPA를 같이 사용하는 경우 각각 다른 방식으로 로깅을 구성해야 하는 불편함이 있음
     - logging 모듈, DB 모듈로 로깅 설정이 분리되어 관리해야 함
-  - 방법 2. 직접 AOP 구현 
+  - 방법 3. AOP 구현 
     ```kotlin
     @Around("execution(* com.hanghae.commerce.data.domain..*(..))")
     @Throws(Throwable::class)
@@ -137,6 +142,24 @@
         return result
     }
     ```
+  - 방법 4. 인프라 설정
+    - MySQL을 설치하여 사용하고 있다면, 설정 파일 'my.cnf' 에서 슬로우 쿼리 통계 설정
+      ```text
+      [mysqld]
+      
+      general_log=on
+      log_output='TABLE'
+      slow_query_log = 1
+      slow_query_log_file = /var/log/mysql/mariadb-slow.log ->  로그 위치
+      long_query_time = 5  - 쿼리 5초 이상인 쿼리
+      log_slow_rate_limit = 1
+      log_slow_verbosity = query_plan
+      log_slow_admin_statements
+      ```
+      ```sql
+      select * from mysql.slow_log;
+      ```
+    - AWS RDS 를 사용한다면 더욱 간단하게 설정할 수 있음 
 - INFO 수준의 로그
   - 사용자 행동 추적
   - 
