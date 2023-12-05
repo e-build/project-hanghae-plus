@@ -5,6 +5,7 @@ tasks.getByName("bootJar") {
 dependencies {
     implementation(project(":commerce-support:logging"))
     implementation(project(":commerce-support:monitoring"))
+    implementation(project(":commerce-support:api-docs"))
     runtimeOnly(project(":commerce-infra:db-main"))
     runtimeOnly(project(":commerce-infra:redis-main"))
     runtimeOnly(project(":commerce-infra:external-api"))
