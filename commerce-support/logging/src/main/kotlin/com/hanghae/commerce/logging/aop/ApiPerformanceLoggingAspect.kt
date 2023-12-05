@@ -28,11 +28,10 @@ class ApiPerformanceLoggingAspect {
     fun handle(pjp: ProceedingJoinPoint): Any {
         val request = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
         logger.info { "${request.log()} : start" }
+
         val startTime = Instant.now()
         val result = pjp.proceed()
-        request.setAttribute("startTime", Instant.now())
-        val endTime = Instant.now()
-        val processingTimeMillis = endTime.toEpochMilli() - startTime.toEpochMilli()
+        val processingTimeMillis = Instant.now().toEpochMilli() - startTime.toEpochMilli()
 
         when {
             processingTimeMillis > 5000 -> logger.error { "${request.log()} Significant Slow API: ${processingTimeMillis}ms" }
