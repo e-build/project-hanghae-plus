@@ -5,24 +5,42 @@ import com.hanghae.commerce.store.application.StoreFacade
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/stores")
 class StoreController(
     private val storeFacade: StoreFacade,
 ) {
-    @PostMapping("/store")
+    @PostMapping
     fun createStore(@RequestBody request: CreateStoreRequest): CreateStoreResponse {
         return CreateStoreResponse.of(
             storeFacade.resisterStore(request.toCommand()),
         )
     }
 
-    @GetMapping("/store")
-    fun getStore(@RequestBody request: GetStoreRequest): GetStoreResponse {
+//    @Operation(
+//        summary = "Store single item inquiry",
+//        description = """
+//Search for a specific store.
+//- [jira ticket](...link_url...)
+//- If you pass storeId to the URL path, store information corresponding to the ID will be returned.
+//
+//#### Custom exception case
+//| Http Status | Error Code  | Error Message | Error Data | Remark   |
+//|-------------|-------------|--------------|------------|-----------|
+//| 403         | NO_PERMISSION       |This request is only available to administrators.  |            |           |
+//| 400         | STORE_NOT_FOUND       |Store not found.   |            |           |
+//| 400         | STORE_WAS_DELETED       |This store has been deleted.  |            |           |
+//"""
+//    )
+    @GetMapping("/{storeId}")
+    fun getStore(
+        @PathVariable storeId: String,
+    ): GetStoreResponse {
         return GetStoreResponse.of(
-            storeFacade.getStore(request.storeId),
+            storeFacade.getStore(storeId),
         )
     }
 
-    @GetMapping("/stores")
+    @GetMapping
     fun getStores(): GetStoreListResponse {
         return GetStoreListResponse.of(
             storeFacade.getStores(),
