@@ -99,9 +99,8 @@
   - 웹 요청
     - 요청 ID: 각각의 웹 요청이나 작업에 대한 고유 식별자
     - 세션 ID: 사용자 세션 식별자
-    - 사용자 정보: 현재 사용자 ID
-      
-      ex) [ApiTrackingLoggingAspect.kt](commerce-support/logging/src/main/kotlin/com/hanghae/commerce/logging/aop/ApiTrackingLoggingAspect.kt)
+    - 사용자 정보: 현재 사용자 ID 
+    - ex) [ApiTrackingLoggingAspect.kt](commerce-support/logging/src/main/kotlin/com/hanghae/commerce/logging/aop/ApiTrackingLoggingAspect.kt)
   - 트랜잭션 
     - 트랜잭션 ID: 트랜잭션 처리에 대한 고유한 식별자
     - 개발 상황에서 트랜잭션 간의 계층구조, 격리수준, 전파수준에 대한 정보도 참고할 수 있도록 구성 가능 
