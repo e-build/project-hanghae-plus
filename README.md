@@ -102,15 +102,16 @@
     - 사용자 정보: 현재 사용자 ID 
     - ex) [ApiTrackingLoggingAspect.kt](commerce-support/logging/src/main/kotlin/com/hanghae/commerce/logging/aop/ApiTrackingLoggingAspect.kt)
   - 트랜잭션 
-    - 트랜잭션 ID: 트랜잭션 처리에 대한 고유한 식별자
-    - 개발 상황에서 트랜잭션 간의 계층구조, 격리수준, 전파수준에 대한 정보도 참고할 수 있도록 구성 가능 
+    - 트랜잭션 ID: 트랜잭션 처리에 대한 고유 식별자
+    - 개발 상황에서 트랜잭션 간의 계층구조, 격리수준, 전파수준에 대한 정보도 참고할 수 있도록 구성 가능
+    - ex) [TransactionLoggingAspect.kt](commerce-support/logging/src/main/kotlin/com/hanghae/commerce/logging/aop/TransactionLoggingAspect.kt) (구현중)
   - 구현 고민
     - MDC(Mapped Diagnostic Context) 활용
     - Spring MVC 안에서 로깅 구조를 설계할 때 대부분 특정 메서드 실행 전/후로 로그 구성 작업이 많이 이루어짐. Filter, Interceptor, AOP 등을 활용하여 MDC에 필요한 정보 세팅 가능
-    - 어떤 방식으로 하던 하나의 기술로 일관성을 맞추는 것이 사이드 이펙트를 방지하고 트러블슈팅을 용이하게 함. Filter면 Filter만 쓰고, Interceptor면 Interceptor만 쓰는 것. 
-      예를들어 API 성능 로깅은 Interceptor 에서 하고 MDC 셋팅은 AOP 에서 했다고 하면, AOP 실행 이후 MDC는 clear 해야 하기 때문에 Interceptor에서 찍는 로그는 MDC 적용이 안됨
+    - 어떤 방식으로 하던 하나의 기술로 일관성을 맞추는 것이 사이드 이펙트를 방지하고 트러블슈팅을 용이하게 함. Filter면 Filter만 쓰고, Interceptor Interceptor만 쓰는 것. 
+      예를들어 API 성능 로깅은 Interceptor 에서 하고, 웹 요청 로깅을 위해 MDC 셋팅은 AOP 에서 했다고 하면, AOP 실행 이후 MDC는 clear 해야 하기 때문에 Interceptor에서 찍는 로그는 MDC 적용이 안됨
     - Filter와 Interceptor 는 실행 시점에 차이가 있지만 일반적으로 특정 UrlPattern 에 따라 공통적으로 적용할 로직을 정의하는 용도로 사용됨(ex. 인증, 인코딩, 보안, 로깅 등)
-    - 트랜잭션과 같이 특정 스프링에 빈에 대한 호출을 가로채는 것과 같이 좀 더 구체적인 상황과 기술에 대한 로깅을 위해 AOP 로 구현하는 것이 편리하다고 생각
+    - 트랜잭션과 같이 특정 스프링 빈에 대한 호출을 가로채는 작업은 좀 더 구체적인 상황과 기술에 대한 로깅을 위해 AOP 로 구현하는 것이 편리하다고 생각
 - HTTP API 성능 로깅
   - ex) [ApiPerformanceLoggingAspect.kt](commerce-support/logging/src/main/kotlin/com/hanghae/commerce/logging/aop/ApiPerformanceLoggingAspect.kt)
 - 슬로우 쿼리 로깅
@@ -119,13 +120,13 @@
     hibernate.session.events.log.LOG_QUERIES_SLOWER_THAN_MS=1000
     org.hibernate.SQL_SLOW=info
     ```
-  - 방법 2. hibernate statistics 활용
+  - 방법 2. hibernate statistics 설정
     ```properties
     jpa.properties.hibernate.generate_statistics=true
     logging.level.org.hibernate.stat=debug
     ```
     - 레거시에서 mybatis와 JPA를 같이 사용하는 경우 각각 다른 방식으로 로깅을 구성해야 하는 불편함
-    - 트랜잭션에 대한 로깅 작업이 logging 모듈, DB 모듈로 분리되는 문제
+    - 로그 구성이 logging 모듈, DB 모듈로 분리되는 문제
   - 방법 3. AOP 구현 
     ```kotlin
     @Around("execution(* com.hanghae.commerce.data.domain..*(..))")
@@ -202,20 +203,20 @@
 - 도메인 주도 설계와 레이어드 아키텍처와의 관계
   - 도메인 주도 설계는 레이어드 아키텍처와는 별개의 개념. 도메인 주도 설계는 도메인 모델을 중심으로 설계하는 방법론이고, 레이어드 아키텍처는 아키텍처의 구조를 레이어로 나누는 방법론일뿐
   - 애플리케이션을 도메인을 중심으로 설계하기 위해 선택 가능한 여러 아키텍처(레이어드, 클린, 헥사고날 등) 중 하나일 뿐. 다만 도메인 주도 설계에 가장 적합한 아키텍처에 대해선 스스로 더 학습의 여지가 있음.
-- Domain 계층
+- 도메인 계층의 구성
   - domain bean
     - service, factory, event listener, ...
     - service 에서 validator 를 분리하면, 단순히 책임을 구분하기 위해 클래스를 분리했을 뿐이므로 domain 레이어에 존재함. service 에서 validator 를 의존하는 것은 위상이 깨지는 걸로 봐야 하는건지?
-    - service 에서 도메인 모델에 의존하는 건 위상이 깨지는 게 아닌건지?
+    - service 에서 도메인 모델에 의존하는 건 위상이 깨지는 게 아닌건지? -> 다른 책임을 수행한다고 생각하여 하나의 도메인 서비스가 여러 개의 클래스로 분리되었다면, 위상이 깨지지 않도록 호출 계층을 올려 facade에서 분리된 서비스들을 호출해야 함.
   - domain model
     - 도메인 model, enum, domain event
     - command model 에는 id만? object가?
   - command model
-    - 데이터 삽입, 수정 요청에 대한 명령에 필요한 데이터 모델
+    - 데이터 삽입, 수정 요청 명령에 필요한 데이터 모델
   - 조회는 어떻게?
     - 무슨 네이밍을 사용?
     - 위상을 엄격하게 지켜야 하는 지?
-      - 쿼리에서 비즈니스 로직이 없도록 하기위해. 데이터 접근 레이어의 책임을 최소화했다. 그렇다면 비즈니스 로직을 담당하는 domain 레이어가 조회 관련 유즈케이스를 수행할 때는 실질적으로 사용이 모호해지는 데 application -> infrastructure 로 가면 안되는 지?
+      - 쿼리에서 비즈니스 로직이 없도록 하기위해. 데이터 접근 레이어의 책임을 최소화함. 그렇다면 비즈니스 로직을 담당하는 domain 레이어가 조회 관련 유즈케이스를 수행할 때는 실질적으로 사용이 모호해지는 데 application -> infrastructure 로 가면 안되는 지?
 - JPA 엔티티를 그대로 도메인 모델로 사용해도 될까?
   - JPA 엔티티를 도메인 모델로 활용하게 될 경우 DB에 대한 결합을 충분히 분리했다고 볼 수 있을까?
   - JPA 엔티티가 가지는 1차 캐시, 지연로딩, 영속성 컨텍스트와 같은 특징들은 결국 도메인 레이어가 JPA 라는 데이터 베이스 접근 기술에 의존하게 되는 이유가 됨.
