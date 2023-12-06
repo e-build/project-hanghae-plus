@@ -99,14 +99,17 @@
   - 웹 요청
     - 요청 ID: 각각의 웹 요청이나 작업에 대한 고유 식별자
     - 세션 ID: 사용자 세션 식별자
-    - 사용자 정보: 현재 사용자 ID 
-    - ex) [ApiTrackingLoggingAspect.kt](commerce-support/logging/src/main/kotlin/com/hanghae/commerce/logging/aop/ApiTrackingLoggingAspect.kt)
+    - 사용자 정보: 현재 사용자 ID
+        - ex) [ApiTrackingLoggingAspect.kt](commerce-support/logging/src/main/kotlin/com/hanghae/commerce/logging/aop/ApiTrackingLoggingAspect.kt)
+    - 비동기 메서드를 호출하는 등 요청 스레드 외에 스레드를 추가적으로 동작시킬 때, MDC context 를 공유하기 위한 작업 필요
+        - ex) [TaskExecutorConfig.kt](commerce-api/src/main/kotlin/com/hanghae/commerce/common/async/TaskExecutorConfig.kt), [MDCCopyTaskDecorator.kt](commerce-support/logging/src/main/kotlin/com/hanghae/commerce/logging/MDCCopyTaskDecorator.kt)
+        - [우아한 형제들 기술블로그](https://techblog.woowahan.com/13429/) 참고
   - 트랜잭션 
     - 트랜잭션 ID: 트랜잭션 처리에 대한 고유 식별자
     - 개발 상황에서 트랜잭션 간의 계층구조, 격리수준, 전파수준에 대한 정보도 참고할 수 있도록 구성 가능
     - ex) [TransactionLoggingAspect.kt](commerce-support/logging/src/main/kotlin/com/hanghae/commerce/logging/aop/TransactionLoggingAspect.kt) (구현중)
   - 구현 고민
-    - MDC(Mapped Diagnostic Context) 활용
+    - [MDC(Mapped Diagnostic Context)](https://velog.io/@bonjugi/MDC-%EC%9D%98-%EB%8F%99%EC%9E%91%EB%B0%A9%EC%8B%9D-ThreadLocal) 활용 
     - Spring MVC 안에서 로깅 구조를 설계할 때 대부분 특정 메서드 실행 전/후로 로그 구성 작업이 많이 이루어짐. Filter, Interceptor, AOP 등을 활용하여 MDC에 필요한 정보 세팅 가능
     - 어떤 방식으로 하던 하나의 기술로 일관성을 맞추는 것이 사이드 이펙트를 방지하고 트러블슈팅을 용이하게 함. Filter면 Filter만 쓰고, Interceptor Interceptor만 쓰는 것. 
       예를들어 API 성능 로깅은 Interceptor 에서 하고, 웹 요청 로깅을 위해 MDC 셋팅은 AOP 에서 했다고 하면, AOP 실행 이후 MDC는 clear 해야 하기 때문에 Interceptor에서 찍는 로그는 MDC 적용이 안됨
