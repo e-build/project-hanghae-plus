@@ -23,9 +23,8 @@ class ApiTrackingLoggingAspect {
     @Before(value = "apiHandlerMethods()")
     fun handle() {
         val request = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
-        MDC.put("traceId", request.getHeader("X-Request-Id") ?: UUID.randomUUID().toString().replace("-", ""))
-        MDC.put("sessionId", request.session.id)
-        MDC.put("userId", UUID.randomUUID().toString()) // TODO: 사용자 정보 저장소(메모리) 연동 시 구현 고려
+        MDC.put("requestId", request.getHeader("X-Request-Id") ?: UUID.randomUUID().toString().replace("-", ""))
+        MDC.put("userId", "") // TODO: 사용자 정보 저장소(메모리) 연동 시 구현 고려
     }
 
     @AfterReturning("apiHandlerMethods()")
