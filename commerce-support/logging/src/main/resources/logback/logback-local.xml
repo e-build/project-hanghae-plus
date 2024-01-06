@@ -16,5 +16,6 @@
 <!--    <logger name="org.springframework.data" level="DEBUG"/>-->
     <logger name="com.hanghae.commerce" level="DEBUG"/>
     <logger name="org.springdoc" level="DEBUG"/>
+    <logger name="org.springframework.transaction.interceptor" level="TRACE"/>
 <!--    <logger name="org.hibernate.stat" level="DEBUG"/>-->
 </configuration>
