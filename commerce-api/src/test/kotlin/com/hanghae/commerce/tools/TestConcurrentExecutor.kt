@@ -27,18 +27,21 @@ class TestConcurrentExecutor {
     @Throws(InterruptedException::class)
     fun executeOrderInMultiThread(
         threadCount: Int,
-        runnable: Runnable,
+        action: () -> Unit,
     ) {
         val executorService = Executors.newFixedThreadPool(32)
         val latch = CountDownLatch(threadCount)
 
         for (i in 0 until threadCount) {
-            try {
-                executorService.submit(runnable)
-            } finally {
-                latch.countDown()
+            executorService.submit {
+                try {
+                    action()
+                } finally {
+                    latch.countDown()
+                }
             }
         }
         latch.await()
+        executorService.shutdown()
     }
 }
