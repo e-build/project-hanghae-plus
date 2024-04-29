@@ -36,7 +36,7 @@
 - Domain - 비즈니스 정책 및 규칙 담당
 - Infrastructure - 애플리케이션이 의존하는 외부 시스템(DB, Redis, 외부 API, ...)에 대한 인터페이스를 제공
 
-# 프로젝트 이후 추가 학습
+# 프로젝트 이후 추가 고민
 ### Github Action
 - PR 시, ktlint의 피드백이 라인에 노출됨으로 인해 코드 가독성을 해쳐 코드를 보는 것이 어려워짐.
   - ScaCap/action-ktlint 의 불편함 
